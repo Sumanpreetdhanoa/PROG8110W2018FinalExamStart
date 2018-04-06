@@ -3,7 +3,20 @@
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-angular.module('starter', ['ionic'])
+angular.module('starter', ['ionic', 'firebase'])
+
+.controller('firebaseCtl', function($scope, $firebaseObject){
+  $scope.projects=[];
+  $scope.model = {};
+  $scope.addProject = function(){
+    $scope.projects.push({name:$scope.model.project, tasks:[]});
+    $scope.model.project="";
+  }
+  $scope.addTask = function(project){
+    project.tasks.push({name:project.task});
+    project.task="";
+  }
+})
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
