@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
-    <title></title>
 
-    <link rel="manifest" href="manifest.json">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+  <title></title>
 
-    <!-- un-comment this code to enable service worker
+  <link rel="manifest" href="manifest.json">
+
+  <!-- un-comment this code to enable service worker
     <script>
       if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('service-worker.js')
@@ -16,50 +17,64 @@
       }
     </script>-->
 
-    <link href="lib/ionic/css/ionic.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
+  <link href="lib/ionic/css/ionic.css" rel="stylesheet">
+  <link href="css/style.css" rel="stylesheet">
 
-    <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
+  <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
     <link href="css/ionic.app.css" rel="stylesheet">
     -->
 
-    <!-- ionic/angularjs js -->
-    <script src="lib/ionic/js/ionic.bundle.js"></script>
+  <!-- ionic/angularjs js -->
+  <script src="lib/ionic/js/ionic.bundle.js"></script>
 
-    <!-- cordova script (this will be a 404 during development) -->
-    <script src="cordova.js"></script>
-   <!-- firebase angular code -->
-   <script src="https://cdn.firebase.com/js/client/2.2.1/firebase.js"></script>
-   <script src="https://cdn.firebase.com/libs/angularfire/1.0.0/angularfire.js"></script>
+  <!-- cordova script (this will be a 404 during development) -->
+  <script src="cordova.js"></script>
+  <!-- firebase angular code -->
+  <script src="https://cdn.firebase.com/js/client/2.2.1/firebase.js"></script>
+  <script src="https://cdn.firebase.com/libs/angularfire/1.0.0/angularfire.js"></script>
 
-    <!-- your app's js -->
-    <script src="js/app.js"></script>
-  </head>
-  <body ng-app="starter" ng-controller="firebaseCtl">
+  <!-- your app's js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/core.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/md5.js"></script>
+  <script src="js/uuid.js"></script>
+  <script src="js/app.js"></script>
+</head>
 
-    <ion-pane>
-      <ion-header-bar class="bar-stable">
-        <h1 class="title">Ionic Blank Starter</h1>
-      </ion-header-bar>
-      <ion-content>
-        <div ng-repeat="project in projects">
+<body ng-app="starter" ng-controller="firebaseCtl">
+
+  <ion-pane>
+    <ion-header-bar class="bar-stable">
+      <h1 class="title">Ionic Blank Starter</h1>
+    </ion-header-bar>
+    <ion-content>
+      <div ng-hide="sKey != null">
+        <form ng-submit="initializeStorage()">
+          <input placeholder="enter your phone number or email" ng-model="model.uname" />
+          <input type="password" placeholder="enter a password" ng-model="model.password" />
+          <button type="submit">login</button>
+        </form>
+      </div>
+      <div ng-hide="sKey == null">
+        <div ng-repeat="(project_guid, project) in projects">
           {{project.name}}
           <div class="indent">
-          <div ng-repeat="task in project.tasks">
-            {{task.name}}
-          </div>          
-          <form ng-submit="addTask(project)">
+            <div ng-repeat="(task_guid, task) in project.tasks">
+              {{task.name}}
+            </div>
+            <form ng-submit="addTask(project)">
               <input ng-model="project.task" placeholder="add task" />
               <button>+</button>
-                  
-          </form>
-        </div>
+
+            </form>
+          </div>
         </div>
         <form ng-submit="addProject()">
-        <input ng-model="model.project" placeholder="add project" />
-        <button>+</button>
+          <input ng-model="model.project" placeholder="add project" />
+          <button>+</button>
         </form>
-      </ion-content>
-    </ion-pane>
-  </body>
+      </div>
+    </ion-content>
+  </ion-pane>
+</body>
+
 </html>
